@@ -14,6 +14,7 @@ interface RestaurantItemProps {
 const RestaurantItem = ({restaurant}: RestaurantItemProps) => {
     return ( 
         <div className="min-w-[266px] max-w-[266px] space-y-3">
+            
             {/*Imagem */}
             <div className="w-full h-[136px] relative">
                 <Image
@@ -32,6 +33,7 @@ const RestaurantItem = ({restaurant}: RestaurantItemProps) => {
                     <HeartIcon size={16} className="fill-white" />
                 </Button>
             </div>
+
             {/*Texto */}
             <div>
                 <h3 className="font-semibold text-sm">{restaurant.name}</h3>
