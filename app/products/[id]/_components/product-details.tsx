@@ -137,7 +137,10 @@ const ProductDetails = ({ product, complementaryProducts }:ProductDetailsProps) 
             <div className="mt-6 space-y-3">
                 <h3 className="font-semibold px-5">Sucos</h3>
                 <ProductList products={complementaryProducts}/>
-               
+            </div>
+
+            <div className="mt-6 px-5">
+                <Button className="w-full font-semibold"> Adicionar à sacola</Button>
             </div>
 
         </div>
