@@ -1,7 +1,11 @@
+"use client"
+
 import { Prisma } from "@prisma/client";
 import Image from "next/image";
 import { calculateProductTotalPrice, formatCurrency } from "../_helpers/price";
 import { ArrowDownIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface ProductItemProps {
     // product: Product,
@@ -17,8 +21,24 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({product}: ProductItemProps) => {
+    {/* 
+     
+    OBS: Se a sua página tiver interatividade, é necessário transformar em client component 
+    
+    Adicionar no inícip "use client"
+
+        1 - Navegar para outra página com onClick
+
+        const router = useRouter();
+
+        2 - Adicionar na tag desejada
+
+        onClick={() => router.push(`/products/${product.id}`)}
+    */}
+
     return ( 
-        <div className="space-y-2 w-[150px] min-w-[150px]"> 
+        <Link className="w-[150px] min-w-[150px]" href={`/products/${product.id}`}>
+         <div className="space-y-2 w-full"> 
             {/*Imagem*/}
             <div className="h-[150px] w-full relative">
                 <Image src={product.imageUrl} alt={product.name} fill className="object-cover rounded-lg shadow-md"/>
@@ -47,6 +67,7 @@ const ProductItem = ({product}: ProductItemProps) => {
                 <span className="text-xs text-muted-foreground block">{product.restaurant.name}</span>
             </div>
         </div>
+       </Link>
     );
 }
  
