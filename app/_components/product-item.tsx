@@ -6,6 +6,7 @@ import { calculateProductTotalPrice, formatCurrency } from "../_helpers/price";
 import { ArrowDownIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { cn } from "../_lib/utils";
 
 interface ProductItemProps {
     // product: Product,
@@ -17,10 +18,11 @@ interface ProductItemProps {
                 }
             }
         }
-    }>
+    }>;
+    className?: string
 }
 
-const ProductItem = ({product}: ProductItemProps) => {
+const ProductItem = ({product, className}: ProductItemProps) => {
     {/* 
      
     OBS: Se a sua página tiver interatividade, é necessário transformar em client component 
@@ -37,10 +39,10 @@ const ProductItem = ({product}: ProductItemProps) => {
     */}
 
     return ( 
-        <Link className="w-[150px] min-w-[150px]" href={`/products/${product.id}`}>
+        <Link className={cn("w-[150px] min-w-[150px]", className)} href={`/products/${product.id}`}>
          <div className="space-y-2 w-full"> 
             {/*Imagem*/}
-            <div className="h-[150px] w-full relative">
+            <div className="aspect-square w-full relative">
                 <Image src={product.imageUrl} alt={product.name} fill className="object-cover rounded-lg shadow-md"/>
                 {product.discountPercentage && (
                     <div className="absolute flex items-center gap-[2px] rounded-full left-2 top-2 px-2 py-[2x] bg-primary text-white">
