@@ -1,6 +1,7 @@
 "use client"
 
 
+import DeliveryInfo from "@/app/_components/delivery-info";
 import DiscountBadge from "@/app/_components/discount-badge";
 import ProductList from "@/app/_components/product-list";
 
@@ -96,38 +97,9 @@ const ProductDetails = ({ product, complementaryProducts }:ProductDetailsProps) 
             </div>
 
             {/* Dados da entrega */}
-           <div className="px-5">
-            <Card className="flex justify-around py-3 mt-6">
-                    {/* Custo */}
-                    <div className="flex flex-col items-center">
-                        <div className="flex items-center text-muted-foreground gap-1">
-                            <span className="text-xs">Entrega</span>
-                            <BikeIcon size={16}/>
-                        </div>
-                        {Number(product.restaurant.deliveryFee) > 0 ? (
-                            <p className="text-xs font-semibold">
-                                {formatCurrency(Number(product.restaurant.deliveryFee))}
-                            </p>
-                        ) : (
-                            <p className="text-xs font-semibold">
-                                Grátis
-                            </p>
-                            )
-                        }
-                    </div>
-
-                    {/* Tempo */}
-                    <div className="flex flex-col items-center">
-                        <div className="flex items-center text-muted-foreground gap-1">
-                            <span className="text-xs">Tempo</span>
-                            <TimerIcon size={16}/>
-                        </div>
-                        <p className="text-xs font-semibold">
-                            {product.restaurant.deliveryTimeMinutes} min
-                        </p>
-                    </div>
-            </Card>
-           </div>
+            <div className="px-5">
+                <DeliveryInfo restaurant={product.restaurant}/>
+            </div>
 
             <div className="mt-6 space-y-3 px-5">
                 <h3 className="font-semibold">Sobre</h3>

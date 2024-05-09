@@ -40,7 +40,7 @@ const ProductPage = async ({params: { id }}:ProductPageProps) => {
             restaurant: true
         }
     })
-    console.log(product)
+    
     
     return ( 
         <div>
