@@ -48,12 +48,14 @@ export default async function Home() {
       <div className="pt-6 space-y-4">
         <div className="px-5 flex justify-between items-center">
           <h2 className="font-semibold">Pedidos recomendados</h2>
-          <Link href={`/products/recommended`}>
-            <Button variant="ghost" className="p-0 text-primary hover:bg-transparent h-fit">
-              ver todos
-              <ChevronRightIcon size={16}/>
+          
+            <Button variant="ghost" className="p-0 text-primary hover:bg-transparent h-fit" asChild>
+              <Link href={`/products/recommended`}>
+                Ver todos
+                <ChevronRightIcon size={16}/>
+              </Link> 
             </Button>
-          </Link>          
+                   
         </div>
         <ProductList products={products}/>
       </div>
@@ -68,12 +70,12 @@ export default async function Home() {
       <div className="pt-6 space-y-6">
         <div className="px-5 flex justify-between items-center">
           <h2 className="font-semibold">Restaurantes recomendados</h2>
-          <Link href={`/restaurants/recommended`}>
-            <Button variant="ghost" className="p-0 text-primary hover:bg-transparent h-fit">
-              ver todos
-              <ChevronRightIcon size={16}/>
-            </Button>
-          </Link>          
+          <Button variant="ghost" className="p-0 text-primary hover:bg-transparent h-fit" asChild>
+              <Link href={`/restaurants/recommended`}>
+                Ver todos
+                <ChevronRightIcon size={16}/>
+              </Link> 
+            </Button>         
         </div>
         <RestaurantList />
       </div>
