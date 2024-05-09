@@ -7,6 +7,7 @@ import { ChevronRightIcon } from "lucide-react";
 import { db } from "./_lib/prisma";
 import PromoBanner from "./_components/promo-banner";
 import RestaurantList from "./_components/restaurant-list";
+import Link from "next/link";
 
 
 export default async function Home() {
@@ -65,10 +66,12 @@ export default async function Home() {
       <div className="pt-6 space-y-6">
         <div className="px-5 flex justify-between items-center">
           <h2 className="font-semibold">Restaurantes recomendados</h2>
-          <Button variant="ghost" className="p-0 text-primary hover:bg-transparent h-fit">
-            ver todos
-            <ChevronRightIcon size={16}/>
-          </Button>          
+          <Link href={`/restaurants/recommended`}>
+            <Button variant="ghost" className="p-0 text-primary hover:bg-transparent h-fit">
+              ver todos
+              <ChevronRightIcon size={16}/>
+            </Button>
+          </Link>          
         </div>
         <RestaurantList />
       </div>
