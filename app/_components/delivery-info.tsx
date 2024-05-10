@@ -24,11 +24,11 @@ const DeliveryInfo = ({ restaurant }: DeliveryInfoProps) => {
                         <p className="text-xs font-semibold">
                             {formatCurrency(Number(restaurant.deliveryFee))}
                         </p>
-                    ) : (
-                        <p className="text-xs font-semibold">
-                            Grátis
-                        </p>
-                    )
+                        ) : (
+                            <p className="text-xs font-semibold">
+                                Grátis
+                            </p>
+                        )
                     }
                 </div>
 
