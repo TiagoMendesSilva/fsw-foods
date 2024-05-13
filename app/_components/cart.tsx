@@ -17,48 +17,55 @@ const Cart = () => {
     
     return (
         <div className=" flex h-full flex-col py-5">
-            <div className="flex-auto space-y-2">
-                {products.map((product) => (
-                    <CartItem key={product.id} cartProduct={product} />
-                ))}
-            </div>
+            
 
-            {/*Card com todos os valores */}
-            <div className="mt-6">
-                <Card>
-                    <CardContent className="p-5 space-y-4">
-                        <div className="flex justify-between items-center text-xs">
-                            <span className="text-muted-foreground">Subtotal</span> 
-                            <span>{formatCurrency(subTotalPrice)}</span> 
-                        </div> 
-                        <Separator />
-                        <div className="flex justify-between items-center text-xs">
-                            <span>Entrega</span> 
-                            {Number(products?.[0].restaurant.deliveryFee) === 0 
-                            ? <span className="uppercase text-primary">GRÁTIS</span> 
-                            : formatCurrency(Number(products?.[0].restaurant.deliveryFee))}
-                             
-                        </div>  
-                        <Separator/>
-                        <div className="flex justify-between items-center text-xs">
-                            <span className="text-muted-foreground">Descontos</span> 
-                            <span>- {formatCurrency(totalDiscounts)}</span> 
-                        </div> 
-                        <Separator/>
-                         <div className="flex justify-between items-center text-xs font-semibold">
-                            <span>Total</span> 
-                            <span>{formatCurrency(totalPrice)}</span> 
-                        </div>   
-                    </CardContent>
-                </Card>
-            </div>
+            {products.length > 0 ? (
+                <>
+                <div className="flex-auto space-y-2">
+                    {products.map((product) => (
+                        <CartItem key={product.id} cartProduct={product} />
+                    ))}
+                </div>
+                     {/*Card com todos os valores */}
+                <div className="mt-6">
+                    <Card>
+                        <CardContent className="p-5 space-y-4">
+                            <div className="flex justify-between items-center text-xs">
+                                <span className="text-muted-foreground">Subtotal</span> 
+                                <span>{formatCurrency(subTotalPrice)}</span> 
+                            </div> 
+                            <Separator />
+                            <div className="flex justify-between items-center text-xs">
+                                <span>Entrega</span> 
+                                {Number(products?.[0].restaurant.deliveryFee) === 0 
+                                ? <span className="uppercase text-primary">GRÁTIS</span> 
+                                : formatCurrency(Number(products?.[0].restaurant.deliveryFee))}
+                                
+                            </div>  
+                            <Separator/>
+                            <div className="flex justify-between items-center text-xs">
+                                <span className="text-muted-foreground">Descontos</span> 
+                                <span>- {formatCurrency(totalDiscounts)}</span> 
+                            </div> 
+                            <Separator/>
+                            <div className="flex justify-between items-center text-xs font-semibold">
+                                <span>Total</span> 
+                                <span>{formatCurrency(totalPrice)}</span> 
+                            </div>   
+                        </CardContent>
+                    </Card>
+                </div>
 
-            {/*Card para finalizar pedido */}
-            <div>
-                <Button className="w-full mt-6">
-                    Finalizar pedido
-                </Button>
-            </div>
+                {/*Card para finalizar pedido */}
+                <div>
+                    <Button className="w-full mt-6">
+                        Finalizar pedido
+                    </Button>
+                </div>
+                    </>
+                ) : (
+                    <h2 className="font-medium text-left">Sua sacola está vazia.</h2>
+                )}
 
         </div>
     );
