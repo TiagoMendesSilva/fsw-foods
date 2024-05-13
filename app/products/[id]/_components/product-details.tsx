@@ -47,7 +47,7 @@ const ProductDetails = ({ product, complementaryProducts }:ProductDetailsProps) 
 
     const { addProductToCart, products } = useContext(CartContext);
 
-    console.log(products)
+   
     
     //Estado do menu lateral
     const [ isCartOpen, setIsCartOpen ] = useState(false)
