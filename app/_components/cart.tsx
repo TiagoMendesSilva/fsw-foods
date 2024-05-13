@@ -16,8 +16,8 @@ const Cart = () => {
 
     
     return (
-        <div className="py-5">
-            <div className="space-y-2">
+        <div className=" flex h-full flex-col py-5">
+            <div className="flex-auto space-y-2">
                 {products.map((product) => (
                     <CartItem key={product.id} cartProduct={product} />
                 ))}
@@ -34,9 +34,9 @@ const Cart = () => {
                         <Separator />
                         <div className="flex justify-between items-center text-xs">
                             <span>Entrega</span> 
-                            {Number(products[0].restaurant.deliveryFee) === 0 
+                            {Number(products?.[0].restaurant.deliveryFee) === 0 
                             ? <span className="uppercase text-primary">GRÁTIS</span> 
-                            : formatCurrency(Number(products[0].restaurant.deliveryFee))}
+                            : formatCurrency(Number(products?.[0].restaurant.deliveryFee))}
                              
                         </div>  
                         <Separator/>
@@ -53,7 +53,7 @@ const Cart = () => {
                 </Card>
             </div>
 
-            {/*Card com todos os valores */}
+            {/*Card para finalizar pedido */}
             <div>
                 <Button className="w-full mt-6">
                     Finalizar pedido
