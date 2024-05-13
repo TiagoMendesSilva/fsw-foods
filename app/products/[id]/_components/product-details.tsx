@@ -53,8 +53,8 @@ const ProductDetails = ({ product, complementaryProducts }:ProductDetailsProps) 
     const [ isCartOpen, setIsCartOpen ] = useState(false)
     const [ isConfirmationDialogOpen, setIsConfirmationDialogOpen ] = useState(false);
 
-    const addToCart = () => {
-        addProductToCart(product, quantity)
+    const addToCart = ({ emptyCart }:{ emptyCart?: boolean }) => {
+        addProductToCart({ product, quantity,emptyCart })
         setIsCartOpen(true)
     }
     
@@ -69,7 +69,9 @@ const ProductDetails = ({ product, complementaryProducts }:ProductDetailsProps) 
             return setIsConfirmationDialogOpen(true);
         }
 
-        addToCart();
+        addToCart({
+            emptyCart: false,
+        });
       
     }
 
@@ -173,7 +175,7 @@ const ProductDetails = ({ product, complementaryProducts }:ProductDetailsProps) 
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                        <AlertDialogAction onClick={addToCart}>Esvaziar sacola e continuar</AlertDialogAction>
+                        <AlertDialogAction onClick={() => addToCart({emptyCart: true})}>Esvaziar sacola e continuar</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

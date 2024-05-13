@@ -9,15 +9,22 @@ interface ICartContext {
     subTotalPrice: number,
     totalPrice: number,
     totalDiscounts: number,
-    addProductToCart: (product: Prisma.ProductGetPayload<{
-        include: {
-            restaurant: {
-                select: {
-                    deliveryFee: true,
+    addProductToCart: ({
+        product, 
+        quantity, 
+        emptyCart
+    }:{product: Prisma.ProductGetPayload<{
+            include: {
+                restaurant: {
+                    select: {
+                        deliveryFee: true,
+                    }
                 }
             }
-        }
-        }>, quantity: number) => void
+            }>, 
+            quantity: number,
+            emptyCart?: boolean
+    }) => void
     decreaseProductQuantity: (productId: string) => void
     increaseProductQuantity: (productId: string) => void
     removeProductFromCart: (productId: string) => void
@@ -66,21 +73,24 @@ export const CartProvider = ( {children}: {children : ReactNode} ) => {
     const totalDiscounts = subTotalPrice - totalPrice
 
 
-    const addProductToCart = (product: Prisma.ProductGetPayload<{
-        include: {
-            restaurant: {
-                select: {
-                    deliveryFee: true,
+    const addProductToCart = ({
+        product, 
+        quantity, 
+        emptyCart
+    }:{product: Prisma.ProductGetPayload<{
+            include: {
+                restaurant: {
+                    select: {
+                        deliveryFee: true,
+                    }
                 }
             }
-        }
-        }>, 
-        quantity: number) => {
+            }>, 
+            quantity: number,
+            emptyCart?: boolean
+    }) => {
 
-        //verifcar se há algum produto de outro restaurante no carrinho
-        const hasDifferentRestaurantProduct = products.some((cartProduct) => cartProduct.restaurantId !== product.restaurantId)
-
-        if(hasDifferentRestaurantProduct){
+        if(emptyCart){
             setProducts([])
         }
 
