@@ -32,8 +32,7 @@ export interface CartProduct extends Prisma.ProductGetPayload<{
         }
     }
 }> {
-    quantity: number,
-
+    quantity: number
 }
 
 export const CartContext = createContext<ICartContext>({
@@ -77,6 +76,15 @@ export const CartProvider = ( {children}: {children : ReactNode} ) => {
         }
         }>, 
         quantity: number) => {
+
+        //verifcar se há algum produto de outro restaurante no carrinho
+        const hasDifferentRestaurantProduct = products.some((cartProduct) => cartProduct.restaurantId !== product.restaurantId)
+
+        if(hasDifferentRestaurantProduct){
+            setProducts([])
+        }
+
+   
 
         //Verificar se o produto já está no carrinho
         const isProductAlreadyOnCart = products.some(cartProduct => cartProduct.id === product.id)
