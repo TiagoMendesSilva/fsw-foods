@@ -1,6 +1,6 @@
 "use client"
 
-import { Prisma, Product } from "@prisma/client"
+import { Prisma } from "@prisma/client"
 import { ReactNode, createContext, useMemo, useState } from "react"
 import { calculateProductTotalPrice } from "../_helpers/price"
 
@@ -18,7 +18,9 @@ interface ICartContext {
             include: {
                 restaurant: {
                     select: {
+                        id: true,
                         deliveryFee: true,
+                        deliveryTimeMinutes: true
                     }
                 }
             }
@@ -28,14 +30,17 @@ interface ICartContext {
     }) => void
     decreaseProductQuantity: (productId: string) => void
     increaseProductQuantity: (productId: string) => void
-    removeProductFromCart: (productId: string) => void
+    removeProductFromCart: (productId: string) => void,
+    clearCart: () => void
 }
 
 export interface CartProduct extends Prisma.ProductGetPayload<{
     include: {
         restaurant: {
             select: {
-                deliveryFee: true
+                id: true,
+                deliveryFee: true,
+                deliveryTimeMinutes: true
             }
         }
     }
@@ -52,7 +57,8 @@ export const CartContext = createContext<ICartContext>({
     addProductToCart: () => {},
     decreaseProductQuantity: () => {},
     increaseProductQuantity:() => {},
-    removeProductFromCart:() => {}
+    removeProductFromCart:() => {},
+    clearCart: () => {},
     
 })
 
@@ -80,6 +86,10 @@ export const CartProvider = ( {children}: {children : ReactNode} ) => {
 
     const totalDiscounts = (subTotalPrice - totalPrice) + Number(products?.[0]?.restaurant?.deliveryFee)
 
+    const clearCart = () => {
+        return setProducts([]);
+    }
+
 
     const addProductToCart = ({
         product, 
@@ -89,7 +99,9 @@ export const CartProvider = ( {children}: {children : ReactNode} ) => {
             include: {
                 restaurant: {
                     select: {
+                        
                         deliveryFee: true,
+                     
                     }
                 }
             }
@@ -127,6 +139,7 @@ export const CartProvider = ( {children}: {children : ReactNode} ) => {
         //Se o produto não estiver no carrinho, adicioná-lo com a quantidade recebida
 
         setProducts((prev) => [...prev, { ...product, quantity: quantity }])
+        
        
     }
 
@@ -181,6 +194,7 @@ export const CartProvider = ( {children}: {children : ReactNode} ) => {
             totalPrice,
             totalDiscounts, 
             totalQuantify,
+            clearCart,
             addProductToCart, 
             decreaseProductQuantity, 
             increaseProductQuantity, 

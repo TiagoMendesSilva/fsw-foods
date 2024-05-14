@@ -1,22 +1,76 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "../_context/cart";
 import CartItem from "./cart-item";
 import { Card, CardContent } from "./ui/card";
 import { formatCurrency } from "../_helpers/price";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
+import { createOrder } from "../_actions/order";
+import { OrderStatus } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { Loader2 } from "lucide-react";
+import { AlertDialog } from "@radix-ui/react-alert-dialog";
+import { AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 
 const Cart = () => {
+
+    {/*Loading*/} 
+    const [ isSubmitLoading, setIsSubmitLoading ] = useState(false)
+     {/*Alerta de confirmação*/} 
+     const [ isConfirmationDialogOpen, setIsConfirmationDialogOpen ] = useState(false)
+    
+
+    const { data } = useSession();
+
     const { 
         products,
         subTotalPrice, 
         totalPrice, 
-        totalDiscounts 
+        totalDiscounts,
+        clearCart 
     } = useContext(CartContext);
+
+    const handleFinishOrderClick = async () => {
+
+        if(!data?.user) return;
+
+        const restaurant = products[0].restaurant
+
+       try {
+
+        setIsSubmitLoading(true)
+
+        await createOrder({
+            subTotalPrice,
+            totalDiscounts,
+            totalPrice,
+            deliveryFee: restaurant.deliveryFee,
+            deliveryTimeMinutes: restaurant.deliveryTimeMinutes,
+            restaurant: {
+                connect: { id: restaurant.id }
+            },
+            status: OrderStatus.CONFIRMED,
+            user: {
+                connect: {id: data.user.id}
+            }
+        })
+
+        clearCart()
+
+       } catch (error) {
+            console.log(error)
+       } finally {
+        setIsSubmitLoading(false)
+
+       }
+
+        
+    }
 
     
     return (
-        <div className=" flex h-full flex-col py-5">
+        <>
+            <div className=" flex h-full flex-col py-5">
             
 
             {products.length > 0 ? (
@@ -58,16 +112,41 @@ const Cart = () => {
 
                 {/*Card para finalizar pedido */}
                 <div>
-                    <Button className="w-full mt-6">
+                    <Button className="w-full mt-6" onClick={() => setIsConfirmationDialogOpen(true)} disabled={isSubmitLoading}>
+                                                
                         Finalizar pedido
                     </Button>
                 </div>
-                    </>
+                </>
                 ) : (
                     <h2 className="font-medium text-left">Sua sacola está vazia.</h2>
                 )}
 
-        </div>
+            </div>
+
+            <AlertDialog open={isConfirmationDialogOpen} onOpenChange={setIsConfirmationDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                    <AlertDialogTitle>Deseja finalizar seu pedido?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        Ao finalizar seu pedido, você concorda com os termos e conições da nossa plataforma.
+                    </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                    <AlertDialogCancel disabled={isConfirmationDialogOpen}>
+                        {isSubmitLoading && (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        )}
+                        Cancelar
+                    </AlertDialogCancel>
+                    <AlertDialogAction onClick={handleFinishOrderClick}>Finalizar</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+
+        
+        </>
     );
 }
  

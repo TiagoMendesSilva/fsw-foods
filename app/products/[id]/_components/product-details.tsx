@@ -75,6 +75,8 @@ const ProductDetails = ({ product, complementaryProducts }:ProductDetailsProps) 
       
     }
 
+    
+
 
 
 
