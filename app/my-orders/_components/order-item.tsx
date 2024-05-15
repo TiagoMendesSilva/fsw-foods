@@ -5,10 +5,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/app/_components/ui/avatar
 import { Button } from "@/app/_components/ui/button";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
+import { CartContext } from "@/app/_context/cart";
 import { formatCurrency } from "@/app/_helpers/price";
 import { OrderStatus, Prisma } from "@prisma/client";
 import { ChevronRightIcon, Divide } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useContext } from "react";
 
 interface OrdemItemProps {
     order: Prisma.OrderGetPayload<{
@@ -39,6 +42,22 @@ const getOrderStatusLabel = (status: OrderStatus) => {
 }
 
 const OrderItem = ({order}:OrdemItemProps) => {
+
+    const { addProductToCart } =  useContext(CartContext);
+
+    const router = useRouter();
+
+    const handleRedoOrderClick = () => {
+        for( const orderProduct of order.products) {
+            addProductToCart({
+                product: {...orderProduct.product, restaurant: order.restaurant},
+                quantity: orderProduct.quantity,
+            })
+        }
+
+        router.push(`/restaurants/${order.restaurantId}`)
+    }
+
     return ( 
         <Card>
             <CardContent className="py-5">
@@ -86,7 +105,13 @@ const OrderItem = ({order}:OrdemItemProps) => {
 
                 <div className="flex items-center justify-between">
                     <p className="text-sm">{formatCurrency(Number(order.totalPrice))}</p>
-                    <Button variant="ghost" className="text-primary text-xs" size="sm" disabled={order.status !== "COMPLETED"}>
+                    <Button 
+                        variant="ghost" 
+                        className="text-primary text-xs" 
+                        size="sm" 
+                        disabled={order.status !== "COMPLETED"}
+                        onClick={handleRedoOrderClick}
+                    >
                         Refazer pedido
                     </Button>
                 </div>
