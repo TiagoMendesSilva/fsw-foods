@@ -6,7 +6,7 @@ import { formatCurrency } from "../_helpers/price";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import { createOrder } from "../_actions/order";
-import { OrderStatus } from "@prisma/client";
+import { OrderStatus, Product } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { Loader2 } from "lucide-react";
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
@@ -52,6 +52,14 @@ const Cart = () => {
             status: OrderStatus.CONFIRMED,
             user: {
                 connect: {id: data.user.id}
+            },
+            products: {
+                createMany: {
+                    data: products.map((product) => ({
+                        productId: product.id,
+                        quantity: product.quantity
+                    }))
+                }
             }
         })
 
@@ -133,13 +141,15 @@ const Cart = () => {
                     </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                    <AlertDialogCancel disabled={isConfirmationDialogOpen}>
+                    <AlertDialogCancel>
+                        Cancelar
+                    </AlertDialogCancel>
+                    <AlertDialogAction onClick={handleFinishOrderClick} disabled={isSubmitLoading}>
                         {isSubmitLoading && (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         )}
-                        Cancelar
-                    </AlertDialogCancel>
-                    <AlertDialogAction onClick={handleFinishOrderClick}>Finalizar</AlertDialogAction>
+                        Finalizar
+                    </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

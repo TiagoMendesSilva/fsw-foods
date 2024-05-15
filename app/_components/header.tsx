@@ -30,28 +30,32 @@ const Header = () => {
                 <SheetTrigger>
                     <Button size="icon" variant="outline" className="border-none bg-transparent">
                         <MenuIcon />
+                        
                     </Button>
                 </SheetTrigger>
                 <SheetContent>
                     <SheetHeader>
                         <SheetTitle className="text-left">Menu</SheetTitle>
                     </SheetHeader>
+
+                    
                     {data?.user
                     ? (
                     <>
                         <div className="flex justify-between pt-6 gap-2">
                             <div className="flex items-center gap-2">
+                                
                                 <Avatar>
-                                    <AvatarImage src={data.user?.image as string | undefined} />
+                                    <AvatarImage src={data?.user?.image as string | undefined} />
                                     <AvatarFallback>
-                                        {data.user?.name?.split(" ")[0][0]}
-                                        {data.user?.name?.split(" ")[1][0]}
+                                        {data?.user?.name?.split(" ")[0][0]}
+                                        {data?.user?.name?.split(" ")[1][0]}
                                     </AvatarFallback>
                                 </Avatar>  
 
                                 <div>
-                                    <h3 className="font-semibold">{data.user?.name}</h3>
-                                    <span className=" block text-xs text-muted-foreground">{data.user?.email}</span>
+                                    <h3 className="font-semibold">{data?.user?.name}</h3>
+                                    <span className=" block text-xs text-muted-foreground">{data?.user?.email}</span>
                                 </div>
                             </div>
 
@@ -60,7 +64,6 @@ const Header = () => {
                     </>
                     ) 
                     : (
-
                     <>
                         <div className="flex justify-between items-center pt-10">
                             <h2 className="font-semibold"> Olá, Faça seu login!</h2>
@@ -69,6 +72,7 @@ const Header = () => {
                             </Button>
                         </div>
                     </>
+
                     )}
 
                     <div className="py-6">
@@ -85,9 +89,11 @@ const Header = () => {
                        {data?.user && (
                         <>
                         
-                            <Button variant="ghost" className="w-full justify-start space-x-3 text-sm font-normal rounded-full">
-                                <ScrollTextIcon size={16}/>
-                                <span className="block">Meus pedidos</span>
+                            <Button variant="ghost" className="w-full justify-start space-x-3 text-sm font-normal rounded-full" asChild>
+                                <Link href="/my-orders">
+                                    <ScrollTextIcon size={16}/>
+                                    <span className="block">Meus pedidos</span>
+                                </Link>
                             </Button>
 
                             <Button variant="ghost" className="w-full justify-start space-x-3 text-sm font-normal rounded-full">
